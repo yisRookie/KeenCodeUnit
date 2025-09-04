@@ -124,6 +124,8 @@ public class KeenCodeUnit: UIView {
     /// 输入回调 优先级低于代理回调
     public var callback: ((String, Bool) -> ())?
     
+    public var isEditable: Bool = true
+    
     private lazy var textFiled: UITextField = {
         let view = UITextField(frame: bounds)
             .textColor(.clear)
@@ -224,13 +226,15 @@ public class KeenCodeUnit: UIView {
     }
     
     public override func willMove(toSuperview newSuperview: UIView?) {
-        if newSuperview != nil {
+        if newSuperview != nil, isEditable {
             textFiled.becomeFirstResponder()
         }
     }
     
     public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        textFiled.becomeFirstResponder()
+        if isEditable {
+            textFiled.becomeFirstResponder()
+        }
     }
     
     public required init?(coder: NSCoder) {
