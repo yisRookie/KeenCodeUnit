@@ -218,6 +218,11 @@ public class KeenCodeUnit: UIView {
         }
     }
     
+    public func setCode(_ code: String) {
+           textFiled.text = code
+           textChange(textFiled)
+    }
+    
     public override func willMove(toSuperview newSuperview: UIView?) {
         if newSuperview != nil {
             textFiled.becomeFirstResponder()
