@@ -124,7 +124,7 @@ public class KeenCodeUnit: UIView {
     /// 输入回调 优先级低于代理回调
     public var callback: ((String, Bool) -> ())?
     
-    public var isEditable: Bool = true
+//    public var isEditable: Bool = true
     
     private lazy var textFiled: UITextField = {
         let view = UITextField(frame: bounds)
@@ -221,21 +221,32 @@ public class KeenCodeUnit: UIView {
     }
     
     public func setCode(_ code: String) {
-           textFiled.text = code
-           textChange(textFiled)
+        textFiled.text = code
+        textChange(textFiled)
     }
     
-    public override func willMove(toSuperview newSuperview: UIView?) {
-        if newSuperview != nil, isEditable {
-            textFiled.becomeFirstResponder()
-        }
+    /// 开始编辑（弹出键盘）
+    public func beginEditing() {
+//        guard isEditable else { return }
+        textFiled.becomeFirstResponder()
     }
     
-    public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if isEditable {
-            textFiled.becomeFirstResponder()
-        }
+    /// 结束编辑（收起键盘）
+    public func endEditing() {
+        textFiled.resignFirstResponder()
     }
+    
+//    public override func willMove(toSuperview newSuperview: UIView?) {
+//        if newSuperview != nil, isEditable {
+//            textFiled.becomeFirstResponder()
+//        }
+//    }
+//    
+//    public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+//        if isEditable {
+//            textFiled.becomeFirstResponder()
+//        }
+//    }
     
     public required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -414,6 +425,10 @@ private extension KeenCodeUnit {
             if let c = callback {
                 c(code, code.count == attributes.count)
             }
+        }
+        
+        if code.count == attributes.count {
+            endEditing()
         }
     }
     
